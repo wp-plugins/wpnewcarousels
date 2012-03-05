@@ -10,7 +10,7 @@ function addSlides(em){
 	jQuery(document).ready(function() {
 		jQuery.ajax({
 			type:"POST",  
-			url: blogpath+"/wp-content/plugins/WPNewCarousels/includes/DisplaySlides.php",  
+			url: blogpath+"includes/DisplaySlides.php",  
 			data:"pcount="+count,
 			success: function(data){
 				var curdata=document.getElementById("ajaxslide").innerHTML;
@@ -45,7 +45,7 @@ function saveSlides(em){
 	jQuery(document).ready(function() {
 		jQuery.ajax({
 			type:"POST",  
-			url: blogpath+"/wp-content/plugins/WPNewCarousels/includes/InsertSlides.php",  
+			url: blogpath+"includes/InsertSlides.php",  
 			data:"id="+id_+"&carouselid="+carouselid+"&backgroundimageurl="+backgroundimageurl_+"&backgroundimagelink="+backgroundimagelink_+"&backgroundimagealttext="+backgroundimagealttext_+"&titletext="+titletext_,
 			success : function(data){
 				alert(data);

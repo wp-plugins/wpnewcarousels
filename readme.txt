@@ -35,5 +35,6 @@ Visit the [plugin's home page](http://wordpress.org/extend/plugins/wpnewcarousel
 == Changelog == 
 = 1.0 (2012-1-6)
 Update readme.txt file
-
+= 1.1 (2012-3-5)
+Modify manage carousel class , add dynamic path to stylesheet and script .
 == Upgrade Notice ==

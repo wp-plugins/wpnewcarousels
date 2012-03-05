@@ -35,16 +35,17 @@ class ManageCarousel{
 	 * @return string containg the HTML of Carosel select page
 	 */
 	public function DisplayCarouselOptions($id=""){
-		$data  = '<script type="text/javascript">var blogpath="'.get_bloginfo('url').'";</script>'
-			   	.'<script type="text/javascript" src="../wp-content/plugins/WPNewCarousels/js/form.js"></script>'
+ 
+		$data  = '<script type="text/javascript">var blogpath="'.plugin_dir_url(dirname(__FILE__)).'";</script>'
+			   	.'<script type="text/javascript" src="'.plugins_url("js/form.js",dirname(__FILE__)).'" ></script>'
 			   	.'<script type="text/javascript" src="../wp-includes/js/jquery/jquery.js"></script>'
-				.'<link rel="stylesheet" href="../wp-content/plugins/WPNewCarousels/css/style.css" type="text/css" title="ui-theme" />'
+				.'<link rel="stylesheet" href="'.plugins_url("css/style.css",dirname(__FILE__)).'" type="text/css" title="ui-theme" />'
 			   	.'<div style="background-color:#ECECEC; margin:10px 10px 10px 0px;padding:5px 0px 5px 10px; ">'
-				.'<form name="carouselOption" action="" method="post" onsubmit="return getOptionsFields(this);" >'
+				.'<form name="carouselOption" action="" method="post"  >'
 			    .'Select Carousel: <select name="selCarouselId" id="selCarouselId"  >'
 			   	.$this->GetOptionsString("SELECT Id,CarouselName from $this->table1 WHERE IsActive=1","Id","CarouselName",$id)
 			   	.'</select>'
-			    .'&nbsp;&nbsp;<input type="submit" name="submitCarouselId" value="Go" style="width:50px;"></form></div>';
+			    .'&nbsp;&nbsp;<input type="submit" class="button" name="submitCarouselId" value="Go"></form></div>';
 		return $data;
 	}
 	
@@ -65,8 +66,8 @@ class ManageCarousel{
 				  .'</tbody></table>'
 				  .'<span id="ajaxslide"></span>';				
 			$data .='<table class="table1"><tr><td colspan="2"><hr /></td></tr><tr>'
-				  .'<td style="text-align:right;"><input type="submit" style="width:150px;" name="saveCarousel" value="Save" onsubmit="return saveSlides(this.form);">&nbsp;&nbsp;Or&nbsp;&nbsp;'
-				  .'</form></td><td style="text-align:left;"><form name="addmoreslideform" action="POST" onsubmit="return addSlides(this);"><input type="text" value="1" maxlength="1" size="1" name="numberofslideadd"><input type="submit"  name="addmoreslides" value="Add" /></form>'
+				  .'<td style="text-align:right;"><input type="submit"  class="button" name="saveCarousel" value="Save" onsubmit="return saveSlides(this.form);">&nbsp;&nbsp;Or&nbsp;&nbsp;'
+				  .'</form></td><td style="text-align:left;"><form name="addmoreslideform" action="POST" onsubmit="return addSlides(this);"><input type="text" value="1" maxlength="1" size="1" name="numberofslideadd"><input type="submit" class="button" name="addmoreslides" value="Add" /></form>'
 				  .'</td></tr></table>';
 		}
 		else {
@@ -81,8 +82,8 @@ class ManageCarousel{
 					  .$this->getSlide($post_data);				
 			}
 			$data .='</tbody></table><span id="ajaxslide"></span><table class="table1"><tr><td colspan="2"><hr /></td></tr><tr>'
-				  .'<td style="text-align:right;"><input type="submit" style="width:150px;" name="saveCarousel" value="Save">&nbsp;&nbsp;Or&nbsp;&nbsp;'
-				  .'</form></td><td style="text-align:left;"><form name="addmoreslideform" action="POST" onsubmit="return addSlides(this);"><input type="text" value="1" maxlength="1" size="1" name="numberofslideadd"><input type="submit"  name="addmoreslides" value="Add" /></form>'
+				  .'<td style="text-align:right;"><input type="submit"  class="button"  name="saveCarousel" value="Save">&nbsp;&nbsp;Or&nbsp;&nbsp;'
+				  .'</form></td><td style="text-align:left;"><form name="addmoreslideform" action="POST" onsubmit="return addSlides(this);"><input type="text" value="1" maxlength="1" size="1" name="numberofslideadd"><input type="submit"  class="button"  name="addmoreslides" value="Add" /></form>'
 				  .'</td></tr></table>';
 		}
 		$data .="</div>";
@@ -140,7 +141,7 @@ class ManageCarousel{
 			  .'<table width="100%"><tr><td>Carousel Name :</td><td><input type="text" name="txtCarouselName" style="width:59%;height:28px;" value="'.$carouselname.'"></td></tr>'
 			  .'<tr><td>Default Width:</td><td><input type="text" name="txtCarouselWidth" style="width:59% height:28px;" value="'.$carouselwidth.'"></td></tr>'
  			  .'<tr><td>Default Height:</td><td><input type="text" name="txtCarouselHeight" style="width:59% height:28px;" value="'.$carouselheight.'"></td></tr>'
-			  .'<td colspan="2" align="center"> <input type="submit" name="txtAddCarousel" style="height:28px; width:22%;"value="Add New Carousel"></td></tr></table>';
+			  .'<td colspan="2" align="center"> <input type="submit"  class="button"  name="txtAddCarousel" value="Add New Carousel"></td></tr></table>';
 		return $data.'</fieldset></form>'; 	  	
 	}
 
@@ -160,7 +161,7 @@ class ManageCarousel{
 			   .$this->GetOptionsString("SELECT Id,CarouselName FROM $this->table1 WHERE IsActive=1","Id","CarouselName","")   		
 			   .'</select></p>'
 			   .'<p>Deactivate: <input checked="checked" type="Radio" value="DACT" name="type">&nbsp;&nbsp;&nbsp;Delete:<input type="Radio" value="DEL" name="type"> </p>'
-			   .'<p><input type="submit" name="delCarousel" style="height:28px; width:22%;" value="Go ->>"></p></fieldset></form>';
+			   .'<p><input type="submit"  class="button"  name="delCarousel" value="Go"></p></fieldset></form>';
 		return $data;
 	}
 	
@@ -177,7 +178,7 @@ class ManageCarousel{
 			   .'<p>Select Carousel: <select name="carouselid" style="height:28px;width:59%;" >'
 			   .$this->GetOptionsString("SELECT Id,CarouselName FROM $this->table1 WHERE IsActive=0","Id","CarouselName","")   		
 			   .'</select></p>'
-			   .'<p><input type="submit" name="actCarousel" style="height:28px; width:22%;" value="Activate"></p></fieldset></form>';
+			   .'<p><input type="submit" name="actCarousel"  class="button" value="Activate"></p></fieldset></form>';
 		return $data;
 	}
 	

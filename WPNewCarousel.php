@@ -5,12 +5,16 @@ Plugin URI: http://wordpress.org/extend/plugins/wpnewcarousels/
 Description: Provide functionality to create carousel that can be inserted to any page.
 Author: Arjun Jain
 Author URI: http://www.arjunjain.info
-Version: 1.0
+Version: 1.1
 */
 
 require_once 'includes/ManageCarousel.php';
 
 add_action('admin_menu', 'WPNewCarousels');
+
+global $wpnewcarousel_db_version;
+$wpnewcarousel_db_version="1.0";
+
 
 function WPNewCarousels() {
 	add_menu_page('WPNewCarousels - Create carousel','WPNewCarousels', 'administrator', 'wp-new-carousel', 'AdminWPNewCarousels');
@@ -79,8 +83,8 @@ function AdminWPNewCarouselsOption(){
 
 register_activation_hook( __FILE__, "WPNewCarousels_activate" );
 function WPNewCarousels_activate(){
-	
 	global $wpdb; 
+	global $wpnewcarousel_db_version;
 	$mcObject=new ManageCarousel();
 	if (function_exists('is_multisite') && is_multisite()) {
 		// check if it is a network activation - if so, run the activation function for each blog id
@@ -100,6 +104,9 @@ function WPNewCarousels_activate(){
 	}
 	else
 		$mcObject->CreateTable();
+	
+	add_option("wpnewcarousel_db_version", $wpnewcarousel_db_version);	
+	
 }
 
 /*
@@ -158,8 +165,9 @@ function WPNewCarouselShortcode($atts){
  * Include js and css
  * 
  */
-add_action( 'wp_head', 'WPNewCarousel_Script' );
+add_action( 'wp_head', 'wpnewcarousel_script' );
 add_action( 'wp_print_styles', 'WPNewCarousel_Styles' );
+
 function WPNewCarousel_Script() {
 	wp_register_script( 'wpnewcarousel_script_jquery',
 			   '/wp-includes/js/jquery/jquery.js' , false, '1.0.0' );
@@ -171,7 +179,7 @@ function WPNewCarousel_Script() {
 	wp_print_scripts( array( 'wpnewcarousel_script_jquery', 'wpnewcarousel_script' ) );
 }
 function WPNewCarousel_Styles() {
-	wp_enqueue_style( 'WPNewCarousel_style',
+	wp_enqueue_style( 'WPNewCarousel_Styles',
 			  path_join( WP_PLUGIN_URL,
 				     basename( dirname( __FILE__ ) ) .
 				     '/css/carousel.css' ));
