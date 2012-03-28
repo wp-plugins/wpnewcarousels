@@ -20,7 +20,7 @@ This plugin is used to create the carousel that can be inserted to any page. Thi
 
 == Support ==
 
-Fill up this form [ Click here ] (http://www.arjunjain.info/contact) to leave comments,ask question,suggest new feature etc.
+Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask question,suggest new feature etc.
 
 == Installation ==
 1. Unzip
