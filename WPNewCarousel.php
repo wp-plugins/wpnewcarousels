@@ -74,11 +74,20 @@ function AdminWPNewCarouselsOption(){
 		echo $mcObject->DisplayActivateCarousel();
 	}
 	echo '</td><td style="vertical-align:top; padding:15px 20px; width:40%;"><b>How to use :</b><br/>
-		<p>1. Use Shortcode :<b> [wpnewcarousel name="YOUR_CAROUSEL_NAME" height=""  width="" ] </b>to display carousel in your web page</p>
-		<p>2. name is required parameter.</p>
+		<p>1. Use Shortcode :<b> [wpnewcarousel name="CAROUSEL_NAME" height="" width=""  startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""] </b>to display carousel in your web page</p>
+		<p>2. Only name is the required parameter and others are optional.</p>
 		<p>3. height and width are the optional parameter if pass then they will replace default height and width.</p>		  
+		<p>4. startslide is the starting slide number, default value is 0.</p>
+		<p>5. animationspeed is the speed of carousel animation, default value is 500 [ where 1000 = 1sec ].</p>
+		<p>6. imagepause" is the time between image change, default value is 3000.</p>
+		<p>7. shownav" is the flag to show navigation with carousel or not, default value is true.</p>
+		<p>8. hoverpause" is the flag to stop carousel on mouse over, default value is true.</p>
+		
+		
 		<br /><br /><hr />
-		<p><b>Developed by : <a href="http://www.arjunjain.info" target="_blank" >Arjun Jain</a></b></p></div>
+		<p><b>Developed by : <a href="http://www.arjunjain.info" target="_blank" >Arjun Jain</a></b></p>
+		<p>For any help please contact <a href="http://www.arjunjain.info/contact" target="_blank" >here</a></b></p>
+		</div>
 		</td></tr></table>';		
 }
 
