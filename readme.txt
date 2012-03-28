@@ -1,6 +1,7 @@
 === WPNewCarousels ===
-Contributors: Arjun Jain	
+Contributors: arjunjain08
 Author URI: http://www.arjunjain.info/
+Donate link: http://www.arjunjain.info
 Plugin URI: http://wordpress.org/extend/plugins/wpnewcarousels/  
 Tags: carousel, wordpress carousel,admin, plugin, multisite carousel,multisite,wordpress,slider
 Requires at least: 3.0
