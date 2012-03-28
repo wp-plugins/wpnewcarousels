@@ -8,12 +8,21 @@
  * 
  * March 2010
  */
+/*
 jQuery(document).ready(function() {
-        jQuery(".nivoSlider").nivoSlider();
+        jQuery(".nivoSlider").nivoSlider({
+    		startSlide:1,    // define the starting slide number  // default 0
+        	animSpeed:1000,  // define animation speed of the carousel // default 500
+            pauseTime:3000,   // define the time between image slides 1000=1s //default 3000
+    		controlNav: false, // show direction navigation // default true
+    		pauseOnHover:false  // control pause on hover image  // default true 
+                   	
+        });
 });
-   
+*/
 (function($) {
-	var NivoSlider = function(element, options){
+
+    var NivoSlider = function(element, options){
 		//Defaults are below
 		var settings = $.extend({}, $.fn.nivoSlider.defaults, options);
 
@@ -117,7 +126,7 @@ jQuery(document).ready(function() {
 			} else {
 				nivoCaption.stop().fadeTo(settings.animSpeed, 0);
 			}
-		};
+		}
 		
         //Process initial  caption
         processCaption(settings);
@@ -273,7 +282,7 @@ jQuery(document).ready(function() {
 					);
 				}
 			}
-        };
+        }
 		
 		// Add boxes for box animations
 		var createBoxes = function(slider, settings, vars){
@@ -307,7 +316,7 @@ jQuery(document).ready(function() {
 					}
 				}
 			}
-		};
+		}
 
         // Private run method
 		var nivoRun = function(slider, kids, settings, nudge){
@@ -612,19 +621,19 @@ jQuery(document).ready(function() {
 					timeBuff += 100;
 				}
 			}
-		};
+		}
 		
 		// Shuffle an array
 		var shuffle = function(arr){
 			for(var j, x, i = arr.length; i; j = parseInt(Math.random() * i), x = arr[--i], arr[i] = arr[j], arr[j] = x);
 			return arr;
-		};
+		}
         
         // For debugging
         var trace = function(msg){
             if (this.console && typeof console.log != "undefined")
                 console.log(msg);
-        };
+        }
         
         // Start / Stop
         this.stop = function(){
@@ -632,14 +641,14 @@ jQuery(document).ready(function() {
                 $(element).data('nivo:vars').stop = true;
                 trace('Stop Slider');
             }
-        };
+        }
         
         this.start = function(){
             if($(element).data('nivo:vars').stop){
                 $(element).data('nivo:vars').stop = false;
                 trace('Start Slider');
             }
-        };
+        }
         
         //Trigger the afterLoad callback
         settings.afterLoad.call(this);

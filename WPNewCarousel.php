@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wpnewcarousels/
 Description: Provide functionality to create carousel that can be inserted to any page.
 Author: Arjun Jain
 Author URI: http://www.arjunjain.info
-Version: 1.1
+Version: 1.2
 */
 
 require_once 'includes/ManageCarousel.php';
@@ -19,6 +19,7 @@ $wpnewcarousel_db_version="1.0";
 function WPNewCarousels() {
 	add_menu_page('WPNewCarousels - Create carousel','WPNewCarousels', 'administrator', 'wp-new-carousel', 'AdminWPNewCarousels');
 	add_submenu_page( 'wp-new-carousel','wp-new-carousel-option','Settings', 'administrator', 'wp-new-carousel-option', 'AdminWPNewCarouselsOption' );
+	
 }
 
 function AdminWPNewCarousels(){	
@@ -110,20 +111,32 @@ function WPNewCarousels_activate(){
 }
 
 /*
- * Carousel Shortcode 
+ * WPNewCarousel Shortcode 
  * Accept three parametes Name, Width, Height . Width and Height will replace default width and height set for carousel
- * Height and Width are the optional Parameters  
- * [wpnewcarousel name="" width="" height=""]
- *
- * @since: 1.0
+ * Height and Width are the optional Parameters
+ * name is required parameter
+ * Startslide is the starting slide number, default value is 0
+ * Animationspeed is the speed of carousel animation, default value is 500 [ where 1000 = 1sec ]
+ * imagepause is the time between image change, default value is 3000
+ * shownav is the flag to show navigation with carousel or not, default value is true
+ * hoverpause is the flag to stop carousel on mouse over, default value is true
+ * 
+ * [wpnewcarousel name="YOUR_CAROUSEL_NAME" height="" width=""  startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""]
+ * @since: 1.1
  * 
  */
 add_shortcode('wpnewcarousel','WPNewCarouselShortcode');
+
 function WPNewCarouselShortcode($atts){
 	extract(shortcode_atts(array(
 		'name' => '',
 	    'width' =>'',
 		'height' =>'',
+		'startslide'=>'1',
+		'animationspeed'=>'500',
+		'imagepausetime'=>'3000',
+		'shownav'=>'true',
+		'hoverpause'=>'true'
 	),$atts));
 	if(trim($name)=="")
 		return "Please specify the carousel name";
@@ -143,12 +156,40 @@ function WPNewCarouselShortcode($atts){
 		$carouselheight=$cr['CarouselHeight'];
 		$carouselwidth=$cr['CarouselWidth'];
 	}
+	
+	/*
+	 * Assign default value if value is empty
+	 * 
+	 */
+	
 	if(trim($height)=="")
 		$height=$carouselheight;
 	if(trim($width)=="")
 		$width=$carouselwidth;
-		
+	if(trim($startslide)=="")
+		$startslide=0;
+	if(trim($animationspeed)=="")
+		$animationspeed=500;
+	if(trim($imagepausetime)=="")
+		$imagepausetime=3000;
+	if(trim($shownav)=="")
+		$shownav=true;
+	if(trim($hoverpause)=="")
+		$hoverpause=true;	
+
 	$results=$wpdb->get_results("SELECT * FROM $carouseldatatable WHERE CarouselId=$carouselid",ARRAY_A);
+	echo '<script type="text/javascript" >
+			jQuery(document).ready(function() {
+       			 jQuery(".nivoSlider").nivoSlider({
+    				startSlide:'.$startslide.',    // define the starting slide number  // default 0
+        			animSpeed:'.$animationspeed.',  // define animation speed of the carousel // default 500
+            		pauseTime:'.$imagepausetime.',   // define the time between image slides 1000=1s //default 3000
+    				controlNav:'.$shownav.', // show direction navigation // default true
+    				pauseOnHover:'.$hoverpause.'  // control pause on hover image  // default true     	
+        		});
+			});
+			</script>';
+	
 	$output .= "<div class='nivoSlider' style='width:".$width."px; height:".$height."px;'>";
 	foreach ($results as $result){
 		if($result['BackgroundImageLink']!="")
@@ -183,5 +224,48 @@ function WPNewCarousel_Styles() {
 			  path_join( WP_PLUGIN_URL,
 				     basename( dirname( __FILE__ ) ) .
 				     '/css/carousel.css' ));
+}
+
+
+/*
+ * Add carousel button to editor
+ * 
+ */
+add_action('init', 'editor_button');
+
+function editor_button() {
+ 
+if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
+		if ( in_array(basename($_SERVER['PHP_SELF']), array('post-new.php', 'page-new.php', 'post.php', 'page.php') ) ) 
+			{    
+    		 add_action('admin_head','add_simple_buttons');
+   			}
+	}
+}
+function add_simple_buttons(){ 
+    wp_print_scripts( 'quicktags' );
+	$output = "<script type='text/javascript'>\n
+	/* <![CDATA[ */ \n";
+	
+	$buttons = array();
+	$buttons[] = array('name' => 'wpnewcarousel',
+					'options' => array(
+						'display_name' => 'wpnewcarousel',
+						'open_tag' => '\n[wpnewcarousel name="" width="" height="" startslide="0" animationspeed="500" imagepausetime="3000" shownav="true" hoverpause="true"]',
+						'key' => ''
+					));
+					
+					
+	for ($i=0; $i <= (count($buttons)-1); $i++) {
+		$output .= "edButtons[edButtons.length] = new edButton('ed_{$buttons[$i]['name']}'
+			,'{$buttons[$i]['options']['display_name']}'
+			,'{$buttons[$i]['options']['open_tag']}'
+			,'{$buttons[$i]['options']['key']}'
+		); \n";
+	}
+	
+	$output .= "\n /* ]]> */ \n
+	</script>";
+	echo $output;
 }
 ?>
