@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wpnewcarousels/
 Description: Provide functionality to create carousel that can be inserted to any page.
 Author: Arjun Jain
 Author URI: http://www.arjunjain.info
-Version: 1.2
+Version: 1.3
 */
 
 require_once 'includes/ManageCarousel.php';
@@ -28,20 +28,45 @@ function AdminWPNewCarousels(){
 		echo $mcObject->DisplayCarouselOptions($_POST['selCarouselId']);
 		echo $mcObject->DisplayCarouselSlides($_POST['selCarouselId']);
 	}
+	else if(isset($_POST['saveCarousel'])){
+		echo $mcObject->DisplayCarouselOptions($_POST['carouselid']);
+		$Id=$_POST['Id'];
+		$carouselId=$_POST['carouselid'];
+		$BackgroundImageURL=$_POST['BackgroundImageURL'];
+		$BackgroundImageLink=$_POST['BackgroundImageLink'];
+		$BackgroudImageAltText=$_POST['BackgroundImageAltText'];
+		$TitleText=$_POST['TitleText'];			
+		for($i=0;$i<sizeof($Id);$i++){
+			if(trim($Id[$i])!=""){
+				// update 
+				if(trim($BackgroundImageURL[$i])=="")
+				$mcObject->DeleteCarouselSlides($Id[$i]);
+				else
+				$mcObject->UpdateCarouselSlides($Id[$i], $carouselId, trim($BackgroundImageURL[$i]), trim($BackgroundImageLink[$i]), trim($BackgroudImageAltText[$i]), trim($TitleText[$i]));
+				
+			}
+			else {
+				//add
+				if(trim($BackgroundImageURL[$i])!="")
+					$mcObject->InsertCarouselSlides($carouselId, trim($BackgroundImageURL[$i]),trim($BackgroundImageLink[$i]),trim($BackgroudImageAltText[$i]), trim($TitleText[$i]));		
+			}
+		}	
+		echo "<br><br><p><b>Carousel slides updated</b></p>";
+	}
 	else 
 		echo $mcObject->DisplayCarouselOptions();
 	
 }
 
-/*
+/**
  *  Admin section WPNewCarousel settings page
- * 
+ * 	@version 1.0
  */
 function AdminWPNewCarouselsOption(){
 	$data ='<div  style="width:90%;font-size:12px;background-color:#ECECEC; margin:10px 0px 10px 0px;padding:5px 0px 5px 10px;">'
-		  .'<h3 align="left">WPNewCarousels</h3>';
+		  .'<h3 align="center">WPNewCarousels</h3>';
 	echo $data;
-	echo '<table border="0"><tr><td style="width:50%;">';
+	echo '<table border="0"><tr><td style="width:50%;vertical-align:top !important;" >';
 	
 	$mcObject=new ManageCarousel();
 	if(isset($_POST['txtAddCarousel'])){
@@ -74,19 +99,23 @@ function AdminWPNewCarouselsOption(){
 		echo $mcObject->DisplayActivateCarousel();
 	}
 	echo '</td><td style="vertical-align:top; padding:15px 20px; width:40%;"><b>How to use :</b><br/>
-		<p>1. Use Shortcode :<b> [wpnewcarousel name="CAROUSEL_NAME" height="" width=""  startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""] </b>to display carousel in your web page</p>
-		<p>2. Only name is the required parameter and others are optional.</p>
-		<p>3. height and width are the optional parameter if pass then they will replace default height and width.</p>		  
-		<p>4. startslide is the starting slide number, default value is 0.</p>
-		<p>5. animationspeed is the speed of carousel animation, default value is 500 [ where 1000 = 1sec ].</p>
-		<p>6. imagepause" is the time between image change, default value is 3000.</p>
-		<p>7. shownav" is the flag to show navigation with carousel or not, default value is true.</p>
-		<p>8. hoverpause" is the flag to stop carousel on mouse over, default value is true.</p>
-		
-		
+		<p>1. <b>The WPNewCarousel short code added to your default wordpress editor.</b> 
+		<p>2. Use Shortcode :<b> [wpnewcarousel name="CAROUSEL_NAME"  height="" width="" effect="" startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""] </b>to display carousel in your web page</p>
+		<p>3. Only name is the required parameter and others are optional when using carousel short code.</p>
+		<p>4. height and width are the optional if you pass these parameter in short code then these parameters will replace the default.</p>		  
+		<p>5. startslide is the starting slide number, default value is 0.</p>
+		<p>6. animationspeed is the speed of carousel animation, default value is 500 [ where 1000 = 1sec ].</p>
+		<p>7. imagepause is the time between image change, default value is 3000.</p>
+		<p>8. shownav is the flag to show navigation control with carousel or not, default value is true.</p>
+		<p>9. hoverpause is the flag to stop carousel on mouse over, default value is true.</p>
+		<p>10. effect is the type of effect you want to show between image transition.<br />
+			The effect parameter can be any of the following:<br /> <b>			
+			sliceDown, sliceDownLeft, sliceUp, sliceUpLeft, sliceUpDown, sliceUpDownLeft,
+			fold, fade, random, slideInRight, slideInLeft, boxRandom, boxRain, 
+			boxRainReverse, boxRainGrow, boxRainGrowReverse</b></p> 
 		<br /><br /><hr />
 		<p><b>Developed by : <a href="http://www.arjunjain.info" target="_blank" >Arjun Jain</a></b></p>
-		<p>For any help please contact <a href="http://www.arjunjain.info/contact" target="_blank" >here</a></b></p>
+		<p>For any help please <a href="http://www.arjunjain.info/contact" target="_blank" >click here</a></p>
 		</div>
 		</td></tr></table>';		
 }
@@ -119,7 +148,7 @@ function WPNewCarousels_activate(){
 	
 }
 
-/*
+/**
  * WPNewCarousel Shortcode 
  * Accept three parametes Name, Width, Height . Width and Height will replace default width and height set for carousel
  * Height and Width are the optional Parameters
@@ -129,8 +158,9 @@ function WPNewCarousels_activate(){
  * imagepause is the time between image change, default value is 3000
  * shownav is the flag to show navigation with carousel or not, default value is true
  * hoverpause is the flag to stop carousel on mouse over, default value is true
+ * effect is the type of effect in image transition
+ * [wpnewcarousel name="YOUR_CAROUSEL_NAME" height="" width=""  effect="" startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""]
  * 
- * [wpnewcarousel name="YOUR_CAROUSEL_NAME" height="" width=""  startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""]
  * @since: 1.1
  * 
  */
@@ -145,6 +175,7 @@ function WPNewCarouselShortcode($atts){
 		'animationspeed'=>'500',
 		'imagepausetime'=>'3000',
 		'shownav'=>'true',
+		'effect'=>'random',
 		'hoverpause'=>'true'
 	),$atts));
 	if(trim($name)=="")
@@ -166,7 +197,7 @@ function WPNewCarouselShortcode($atts){
 		$carouselwidth=$cr['CarouselWidth'];
 	}
 	
-	/*
+	/**
 	 * Assign default value if value is empty
 	 * 
 	 */
@@ -185,11 +216,14 @@ function WPNewCarouselShortcode($atts){
 		$shownav=true;
 	if(trim($hoverpause)=="")
 		$hoverpause=true;	
-
+	if(trim($effect)=="")
+		$effect="random";
+		
 	$results=$wpdb->get_results("SELECT * FROM $carouseldatatable WHERE CarouselId=$carouselid",ARRAY_A);
 	echo '<script type="text/javascript" >
 			jQuery(document).ready(function() {
        			 jQuery(".nivoSlider").nivoSlider({
+       			 	effect:	"'.$effect.'",  // define effect type
     				startSlide:'.$startslide.',    // define the starting slide number  // default 0
         			animSpeed:'.$animationspeed.',  // define animation speed of the carousel // default 500
             		pauseTime:'.$imagepausetime.',   // define the time between image slides 1000=1s //default 3000
@@ -202,8 +236,8 @@ function WPNewCarouselShortcode($atts){
 	$output .= "<div class='nivoSlider' style='width:".$width."px; height:".$height."px;'>";
 	foreach ($results as $result){
 		if($result['BackgroundImageLink']!="")
-			$output .='<a href="'.$result['BackgroundImageLink'].'">';
-		$output .='<img src="'.$result['BackgroundImageURL'].'"  alt="'.$result['BackgroundImageAltText'].'" title="'.$result['TitleText'].'"/></a>';
+			$output .="<a href='".$result['BackgroundImageLink']."'>";
+		$output .="<img src='".$result['BackgroundImageURL']."'  alt='".$result['BackgroundImageAltText']."' title='".$result['TitleText']."' />";
 		if($result['BackgroundImageLink']!="")
 			$output .='</a>';
 	}
@@ -211,7 +245,7 @@ function WPNewCarouselShortcode($atts){
 	return $output;
 }
 
-/*
+/**
  * Include js and css
  * 
  */
@@ -236,7 +270,7 @@ function WPNewCarousel_Styles() {
 }
 
 
-/*
+/**
  * Add carousel button to editor
  * 
  */
@@ -260,7 +294,7 @@ function add_simple_buttons(){
 	$buttons[] = array('name' => 'wpnewcarousel',
 					'options' => array(
 						'display_name' => 'wpnewcarousel',
-						'open_tag' => '\n[wpnewcarousel name="" width="" height="" startslide="0" animationspeed="500" imagepausetime="3000" shownav="true" hoverpause="true"]',
+						'open_tag' => '\n[wpnewcarousel name="" width="" height="" effect="random" startslide="0" animationspeed="500" imagepausetime="3000" shownav="true" hoverpause="true"]',
 						'key' => ''
 					));
 					

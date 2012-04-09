@@ -6,7 +6,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wpnewcarousels/
 Tags: carousel, wordpress carousel,admin, plugin, multisite carousel,multisite,wordpress,slider
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.2
+Stable tag: 1.3
 
 This plugin is used to create the carousel that can be inserted to any page.
 
@@ -35,6 +35,11 @@ Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask qu
 * Use shortcode [wpnewcarousel name="CAROUSEL_NAME" height="" width=""  startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""].
 * "height" and "width" are the optional parameters if inserted then these will replace the default Height and Width.
 * Only "name" is the required parameter and others are optional.
+* "effect" is the type of effect you want to show between image transition.<br />
+	The effect parameter can be any of the following:<br /> <b>			
+	sliceDown, sliceDownLeft, sliceUp, sliceUpLeft, sliceUpDown, sliceUpDownLeft,
+	fold, fade, random, slideInRight, slideInLeft, boxRandom, boxRain, 
+	boxRainReverse, boxRainGrow, boxRainGrowReverse</b>
 * "startslide" is the starting slide number, default value is 0.
 * "animationspeed" is the speed of carousel animation, default value is 500 [ where 1000 = 1sec ].
 * "imagepause" is the time between image change, default value is 3000.
@@ -45,7 +50,7 @@ Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask qu
 1. Carousel button in default wordpress editor 
 2. The WPNewCarousel settings Options
 3. Sample carousel image
-
+4. Add carousel data
 
 == Changelog == 
 
@@ -58,5 +63,9 @@ Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask qu
 
 = 1.2 (2012-3-28) =
 * Modify carousel short code.
-* Add startslide,animationspeed,imagepausetime,shownav,hoverpause parameter with carouse.
+* Add startslide,animationspeed,imagepausetime,shownav,hoverpause parameter with carousel.
 * Add carousel button in default wordpress editor.
+
+= 1.3 (2012-4-5) =
+* Fix IE bugs.
+* Add effect parameter with carousel.

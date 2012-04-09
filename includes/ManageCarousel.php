@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * @author :  Arjun Jain  < http://www.arjunjain.info >
  * @license:  GNU GENERAL PUBLIC LICENSE Version 3
  * 
@@ -17,14 +17,16 @@ class ManageCarousel{
 		$this->table2=$this->DataObject->prefix."WPNewCaroselsData";
 	}
 	
-	/*
-	 *  @return carousel table name 
+	/**
+	 * 
+	 * @return carousel table name 
 	 */
 	public function GetCarouselTable(){
 		return $this->table1;
 	}
 	
-	/*
+	/**
+	 * 
 	 * @return carousel data table name
 	 */
 	public function GetCarouselDataTable(){
@@ -53,9 +55,12 @@ class ManageCarousel{
 	public function DisplayCarouselSlides($Id){
 		$results=$this->DataObject->get_results("SELECT * FROM $this->table2 WHERE CarouselId=$Id",ARRAY_A);
 		$data ='<div style="background-color:#ECECEC; margin:10px 10px 10px 0px;padding:5px 10px 5px 10px; ">'
-			  .'<form action="" method="POST" onsubmit="return saveSlides(this);" >'
+			  
+			  .'<div>
+			  	<form action="" method="POST" name="displayslidesform">'
 			  .'<input type="hidden" id="carouselid" name="carouselid" value="'.$Id.'">'
-			  .'<table class="table1"><tbody>';
+			  .'<table class="table1">
+			  		<tbody>';
 		if(sizeof($results)==0){
 			$data .= '<tr><td colspan="2"><b>Slide-1:</b></td></tr>'
 				  .$this->getSlide()
@@ -63,46 +68,60 @@ class ManageCarousel{
 				  .$this->getSlide()
 				  .'<tr><td colspan="2"><b>Slide-3:</b></td></tr>'
 				  .$this->getSlide()
-				  .'</tbody></table>'
-				  .'<span id="ajaxslide"></span>';				
-			$data .='<table class="table1"><tr><td colspan="2"><hr /></td></tr><tr>'
-				  .'<td style="text-align:right;"><input type="submit"  class="button" name="saveCarousel" value="Save" onsubmit="return saveSlides(this.form);">&nbsp;&nbsp;Or&nbsp;&nbsp;'
-				  .'</form></td><td style="text-align:left;"><form name="addmoreslideform" action="POST" onsubmit="return addSlides(this);"><input type="text" value="1" maxlength="1" size="1" name="numberofslideadd"><input type="submit" class="button" name="addmoreslides" value="Add" /></form>'
-				  .'</td></tr></table>';
+				  .'</tbody>
+				</table>'
+			   .'<span id="ajaxslide"></span>';				
+			$data .='<hr /><input type="submit" class="button" style="float:left" name="saveCarousel" value="Save">
+					</form>
+					 or 
+					<form style="display:inline;" name="addmoreslideform" action="POST" onsubmit="return addSlides(this);">
+					 	<input type="text" value="1" maxlength="1" size="1" name="numberofslideadd">
+						<input type="submit" class="button" name="addmoreslides" value="Add" />
+					</form>
+					</div>';				
 		}
 		else {
 			foreach ($results as $result){
 				$post_data=array();
 				$post_data['Id']=$result['Id'];
-				$post_data['BackgroundImageURL']=$result['BackgroundImageURL'];
-				$post_data['BackgroundImageLink']=$result['BackgroundImageLink'];
-				$post_data['BackgroundImageAltText']=$result['BackgroundImageAltText'];
+				$post_data['BackgroundImageURL']=addslashes($result['BackgroundImageURL']);
+				$post_data['BackgroundImageLink']=addslashes($result['BackgroundImageLink']);
+				$post_data['BackgroundImageAltText']=addslashes($result['BackgroundImageAltText']);
 				$post_data['TitleText']=$result['TitleText'];
 				$data .= '<tr><td colspan="2"><b>Slide:</b></td></tr>'
 					  .$this->getSlide($post_data);				
 			}
-			$data .='</tbody></table><span id="ajaxslide"></span><table class="table1"><tr><td colspan="2"><hr /></td></tr><tr>'
-				  .'<td style="text-align:right;"><input type="submit"  class="button"  name="saveCarousel" value="Save">&nbsp;&nbsp;Or&nbsp;&nbsp;'
-				  .'</form></td><td style="text-align:left;"><form name="addmoreslideform" action="POST" onsubmit="return addSlides(this);"><input type="text" value="1" maxlength="1" size="1" name="numberofslideadd"><input type="submit"  class="button"  name="addmoreslides" value="Add" /></form>'
-				  .'</td></tr></table>';
+			$data .='</tbody></table><span id="ajaxslide"></span>
+					<hr /><input type="submit" class="button" style="float:left" name="saveCarousel" value="Save">
+					</form>
+					 or 
+					<form style="display:inline;" name="addmoreslideform" action="POST" onsubmit="return addSlides(this);">
+					 	<input type="text" value="1" maxlength="1" size="1" name="numberofslideadd">
+						<input type="submit" class="button" name="addmoreslides" value="Add" />
+					</form>
+					</div>';
 		}
 		$data .="</div>";
 		return $data;
 	}
 	
 	public function getSlide($post_data=""){
-		$data = '<tr><td>Background image URL:<br /><input style="width:80%;height:30px;" type="text" name="BackgroundImageURL" value="'.@$post_data['BackgroundImageURL'].'" ></td>'
-			  .'<td>Background image Link:<br /><input type="text" name="BackgroundImageLink" style="width:80%;height:30px;" value="'.@$post_data['BackgroundImageLink'].'" ></td><tr>'
-			  .'<tr><td>Background Image Alt text:<br /><input type="text" name="BackgroundImageAltText" style="width:80%;height:30px;" value="'.@$post_data['BackgroundImageAltText'].'" ></td>'
-			  .'<td>Image title text:<br /><input type="text" name="TitleText" style="width:80%;height:30px;" value="'.@$post_data['TitleText'].'" >
-			  <input type="hidden" name="Id" value="'.@$post_data['Id'].'"></td></tr>';
+		$data = "<tr>
+					<td>Background image URL*:<br /><input style='width:80%;height:30px;' type='text' name='BackgroundImageURL[]' value='".@$post_data['BackgroundImageURL']."' ></td>
+			  		<td>Background image Link:<br /><input type='text' name='BackgroundImageLink[]' style='width:80%;height:30px;' value='".@$post_data['BackgroundImageLink']."' ></td>
+			  	</tr>
+			  	<tr>
+			  		<td>Background Image Alt text:<br /><input type='text' name='BackgroundImageAltText[]' style='width:80%;height:30px;' value='".@$post_data['BackgroundImageAltText']."' ></td>
+			  		<td>Image title text:<br /><input type='text' name='TitleText[]' style='width:80%;height:30px;' value='".@$post_data['TitleText']."' >
+			  		<input type='hidden' name='Id[]' value='".@$post_data['Id']."'></td>
+			  	</tr>";
 		return $data;
 	}
 	
 	public function InsertCarouselSlides($carouselId,$BackgroundImageURL,$BackgroundImageLink,$BackgroudImageAltText,$TitleText){
 		try{
 			$query="INSERT INTO $this->table2(CarouselId,BackgroundImageURL,BackgroundImageLink,BackgroundImageAltText,TitleText) VALUES('$carouselId','$BackgroundImageURL','$BackgroundImageLink','$BackgroudImageAltText','$TitleText')";
-			$this->DataObject->query($query);		
+			$this->DataObject->query($this->DataObject->prepare($query));		
 		}catch (Exception $e){
 			echo "Error: ".$e->getMessage(); 
 		}
@@ -110,10 +129,20 @@ class ManageCarousel{
 	
 	public function UpdateCarouselSlides($Id,$carouselId,$BackgroundImageURL,$BackgroundImageLink,$BackgroudImageAltText,$TitleText){
 		try{
-			$query="UPDATE $this->table2 SET BackgroundImageURL='".$BackgroundImageURL."',BackgroundImageLink='$BackgroundImageLink',BackgroundImageAltText='$BackgroudImageAltText',TitleText='$TitleText' WHERE CarouselId=$carouselId and Id=$Id";
-			$this->DataObject->query($query);		
+			$query="UPDATE $this->table2 SET BackgroundImageURL='".stripslashes($BackgroundImageURL)."',BackgroundImageLink='".stripslashes($BackgroundImageLink)."',BackgroundImageAltText='".stripslashes($BackgroudImageAltText)."',TitleText='".stripslashes($TitleText)."' WHERE CarouselId=$carouselId and Id=$Id";
+			$this->DataObject->query($this->DataObject->prepare($query));		
 		}catch (Exception $e){
 			echo "Error: ".$e->getMessage(); 
+		}
+	}
+	
+	public function DeleteCarouselSlides($Id){
+		try{
+			$query="DELETE FROM $this->table2 WHERE Id=".$Id;
+			$this->DataObject->query($this->DataObject->prepare($query));
+		}
+		catch(Exception $e){
+			echo "Error: ".$e->getMessage();
 		}
 	}
 	
