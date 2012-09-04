@@ -1,0 +1,143 @@
+/*
+ * @author: Arjun Jain ( http://www.arjunjain.info ) 
+ * License: GNU GENERAL PUBLIC LICENSE Version 3
+ *
+ */
+
+.table1
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	text-align: left;
+	vertical-align:top;
+	
+	border-collapse: collapse;
+	width: 99%;
+	margin: 0px auto;
+}
+.table1 tr{
+	min-height:50px !important; 
+}
+
+.table1 th
+{
+    background: none repeat scroll 0 0 #B9C9FE;
+    border-bottom: 1px solid #FFFFFF;
+    border-top: 4px solid #AABCFE;
+    color: #003399;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 8px;
+}
+
+.table1 td
+{
+	width:"50%";
+	padding: 2px 5px;
+	color: #669;
+	border-left: 0px solid #fff;
+}
+.table1 td input{
+	/*height: 30px;*/
+}
+.table1 td textarea{
+	width:100%;
+	height:100px;
+}
+.table1 tfoot td
+{
+	font-size: 11px;
+}
+.table1 tbody td
+{
+	background: url('../images/back.png');
+}
+.table1 .top1
+{
+	border-top: 2px solid #fff;
+}
+
+* html .table1 tbody td
+{
+	/* 
+	   ----------------------------
+		PUT THIS ON IE6 ONLY STYLE 
+		AS THE RULE INVALIDATES
+		YOUR STYLESHEET
+	   ----------------------------
+	*/
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/back.png',sizingMethod='crop');
+	background: none;
+}	
+.table1 tbody tr:hover td
+{
+	color: #339;
+	background: none;
+}
+
+
+.nivoSlider {
+	position:relative;
+	background:#fff url(../images/loading.gif) no-repeat 50% 50%;
+    margin-bottom:50px;
+    -webkit-box-shadow: 0px 1px 5px 0px #4a4a4a;
+    -moz-box-shadow: 0px 1px 5px 0px #4a4a4a;
+    box-shadow: 0px 1px 5px 0px #4a4a4a;
+}
+.nivoSlider img {
+	position:absolute;
+	top:0px;
+	left:0px;
+	display:none;
+}
+ .nivoSlider a {
+	border:0;
+	display:block;
+}
+
+ .nivo-controlNav {
+	position:absolute;
+	left:50%;
+	bottom:-42px;
+    margin-left:-40px; /* Tweak this to center bullets */
+}
+ .nivo-controlNav a {
+	display:block;
+	width:22px;
+	height:22px;
+	background:url(../images/bullets.png) no-repeat;
+	text-indent:-9999px;
+	border:0;
+	margin-right:3px;
+	float:left;
+}
+ .nivo-controlNav a.active {
+	background-position:0 -22px;
+}
+
+ .nivo-directionNav a {
+	display:block;
+	width:30px;
+	height:30px;
+	background:url(../images/arrows.png) no-repeat;
+	text-indent:-9999px;
+	border:0;
+}
+ a.nivo-nextNav {
+	background-position:-30px 0;
+	right:15px;
+}
+ a.nivo-prevNav {
+	left:15px;
+}
+
+ .nivo-caption {
+    font-family: Helvetica, Arial, sans-serif;
+}
+ .nivo-caption a {
+    color:#fff;
+    border-bottom:1px dotted #fff;
+}
+ .nivo-caption a:hover {
+    color:#fff;
+}
