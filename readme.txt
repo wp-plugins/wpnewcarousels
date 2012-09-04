@@ -70,6 +70,6 @@ This plugin is used to create the carousel that can be inserted to any wordpress
 * Fix IE bugs.
 * Add effect parameter with carousel
 
-= 1.4 (2012-9-4)
+= 1.4 (2012-9-4) =
 * Integrate with wordpress media library, add new upload button with every background image url text box
 * Add few more checks with short code at backend to validate correctly.
