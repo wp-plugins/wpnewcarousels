@@ -5,23 +5,24 @@ Donate link: http://www.arjunjain.info
 Plugin URI: http://wordpress.org/extend/plugins/wpnewcarousels/  
 Tags: carousel, wordpress carousel,admin, plugin, multisite carousel,multisite,wordpress,slider
 Requires at least: 3.0
-Tested up to: 3.3.1
-Stable tag: 1.3
+Tested up to: 3.4.1
+Stable tag: 1.4
 
-This plugin is used to create the carousel that can be inserted to any page.
+This plugin is used to create the carousel that can be inserted to any wordpress page.
 
 == Description ==
-This plugin is used to create the carousel that can be inserted to any page. This plugin also support wordpress multisite setup.
+This plugin is used to create the carousel that can be inserted to any wordpress page. This plugin also support wordpress multisite setup.
 
 **Features**
 
-* Instead of delete just disable carousel
-* Manage each carousel width,height,effects,speed,animation separately
-* Manage carousel for each site in wordpress multisite setup
+* wpnewcarousel button added to your default editor
+* Support wordpress multisite setup
+* Manage carousel width,height,effects,speed,animation using short code
 
 == Support ==
 
-Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask question,suggest new feature etc.
+* Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask question,suggest new feature or directly mail at arjun@arjunjain.info
+* For Demo http://wpdemo.arjunjain.info/wpnewcarousel/
 
 == Installation ==
 1. Unzip
@@ -30,11 +31,10 @@ Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask qu
 
 == Using the WPNewCarousels ==
 
-* Add new carousel in settings page.
-* Add data to new carousel carousel in main. 
+* Add new carousel in wpnewcarousel settings page. 
 * Use shortcode [wpnewcarousel name="CAROUSEL_NAME" height="" width=""  startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""].
-* "height" and "width" are the optional parameters if inserted then these will replace the default Height and Width.
-* Only "name" is the required parameter and others are optional.
+* "height" and "width" are the optional parameters when using short code, if use then these parameter will replace the default values of height and width.
+* Only "name" is the required parameter, other parameter are optional when using short code.
 * "effect" is the type of effect you want to show between image transition.<br />
 	The effect parameter can be any of the following:<br /> <b>			
 	sliceDown, sliceDownLeft, sliceUp, sliceUpLeft, sliceUpDown, sliceUpDownLeft,
@@ -42,13 +42,13 @@ Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask qu
 	boxRainReverse, boxRainGrow, boxRainGrowReverse</b>
 * "startslide" is the starting slide number, default value is 0.
 * "animationspeed" is the speed of carousel animation, default value is 500 [ where 1000 = 1sec ].
-* "imagepause" is the time between image change, default value is 3000.
-* "shownav" is the flag to show navigation with carousel or not, default value is true.
+* "imagepause" is the time between image transition, default value is 3000.
+* "shownav" is the flag to show navigation control with carousel, default value is true.
 * "hoverpause" is the flag to stop carousel on mouse over, default value is true.
 
 == Screenshots ==
-1. Carousel button in default wordpress editor 
-2. The WPNewCarousel settings Options
+1. wpnewcarousel button in your default wordpress editor
+2. The WPNewCarousel settings page
 3. Sample carousel image
 4. Add carousel data
 
@@ -68,4 +68,8 @@ Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask qu
 
 = 1.3 (2012-4-5) =
 * Fix IE bugs.
-* Add effect parameter with carousel.
+* Add effect parameter with carousel
+
+= 1.4 (2012-9-4)
+* Integrate with wordpress media library, add new upload button with every background image url text box
+* Add few more checks with short code at backend to validate correctly.

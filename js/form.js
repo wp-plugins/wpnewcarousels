@@ -1,7 +1,7 @@
 /**
  * @author: Arjun Jain ( http://www.arjunjain.info ) 
  * @license: GNU GENERAL PUBLIC LICENSE Version 3
- * @version: 1.1
+ * @since: 1.0
  */
 
 function addSlides(em){
