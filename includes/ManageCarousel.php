@@ -301,8 +301,8 @@ class ManageCarousel{
 	
 	public function CreateTable(){
 		$sql="";
-		$table1=$this->_DataObject->prefix.$this->_table1;
-		$table2=$this->_DataObject->prefix.$this->_table2;
+		$table1=$this->_table1;
+		$table2=$this->_table2;
 		if($this->_DataObject->get_var("SHOW TABLES LIKE '{$table1}'") != $table1){
 			$sql .="CREATE TABLE $table1 ("
 				 ."Id INT NOT NULL AUTO_INCREMENT,"	
