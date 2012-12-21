@@ -1,3 +1,9 @@
+/**
+ * WPNewCarousel Plugin Stylesheet
+ * @author  Arjun Jain < http://www.arjunjain.info >
+ * @version 1.5
+ * @license GNU GENERAL PUBLIC LICENSE Version 3
+ */
 .nivoSlider {
 	position:relative;
 	background:#fff url(../images/loading.gif) no-repeat 50% 50%;

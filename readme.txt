@@ -1,12 +1,12 @@
 === WPNewCarousels ===
 Contributors: arjunjain08	
-Author URI: http://www.arjunjain.info/
+Author URI: http://www.arjunjain.info
 Donate link: http://www.arjunjain.info
 Plugin URI: http://wordpress.org/extend/plugins/wpnewcarousels/  
 Tags: carousel, wordpress carousel,admin, plugin, multisite carousel,multisite,wordpress,slider
 Requires at least: 3.0
-Tested up to: 3.4.1
-Stable tag: 1.4
+Tested up to: 3.5
+Stable tag: 1.5
 
 This plugin is used to create the carousel that can be inserted to any wordpress page.
 
@@ -17,29 +17,32 @@ This plugin is used to create the carousel that can be inserted to any wordpress
 
 * wpnewcarousel button added to your default editor
 * Support wordpress multisite setup
-* Manage carousel width,height,effects,speed,animation using short code
+* Manage carousel width,height,effects,speed,animation using short code or dashboard
+* Add multiple carousel on same page
 
 == Support ==
 
-* Fill up this form [ http://www.arjunjain.info/contact ] to leave comments,ask question,suggest new feature or directly mail at arjun@arjunjain.info
-* For Demo http://wpdemo.arjunjain.info/wpnewcarousel/
+* Fill up this [form](http://www.arjunjain.info/contact) to leave comments,ask question,suggest new feature or directly mail at arjun@arjunjain.info
+* For Demo [Click Here](http://www.arjunjain.info/demos/wpnewcarousel/)
 
 == Installation ==
-1. Unzip
-2. Upload to your plugin directory
-3. Enable the plugin
+
+* Unzip
+* Upload to your plugin directory
+* Enable the plugin
 
 == Using the WPNewCarousels ==
 
 * Add new carousel in wpnewcarousel settings page. 
-* Use shortcode [wpnewcarousel name="CAROUSEL_NAME" height="" width=""  startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""].
+* Use shortcode on any wordpress page 
+ `[wpnewcarousel name="CAROUSEL_NAME" height="" width=""  startslide="" animationspeed="" imagepausetime="" shownav="" hoverpause=""]` 
 * "height" and "width" are the optional parameters when using short code, if use then these parameter will replace the default values of height and width.
 * Only "name" is the required parameter, other parameter are optional when using short code.
-* "effect" is the type of effect you want to show between image transition.<br />
-	The effect parameter can be any of the following:<br /> <b>			
+* "effect" is the type of effect you want to show between image transition.
+	The effect parameter can be any of the following:		
 	sliceDown, sliceDownLeft, sliceUp, sliceUpLeft, sliceUpDown, sliceUpDownLeft,
 	fold, fade, random, slideInRight, slideInLeft, boxRandom, boxRain, 
-	boxRainReverse, boxRainGrow, boxRainGrowReverse</b>
+	boxRainReverse, boxRainGrow, boxRainGrowReverse
 * "startslide" is the starting slide number, default value is 0.
 * "animationspeed" is the speed of carousel animation, default value is 500 [ where 1000 = 1sec ].
 * "imagepause" is the time between image transition, default value is 3000.
@@ -47,29 +50,35 @@ This plugin is used to create the carousel that can be inserted to any wordpress
 * "hoverpause" is the flag to stop carousel on mouse over, default value is true.
 
 == Screenshots ==
+
 1. wpnewcarousel button in your default wordpress editor
-2. The WPNewCarousel settings page
-3. Sample carousel image
+2. Add New carousel
+3. Display add carousel
 4. Add carousel data
 
 == Changelog == 
 
-= 1.0 (2012-1-6) =
+= Version 1.0 (2012-1-6) =
 * Update readme.txt file.
 
-= 1.1 (2012-3-5) =
+= Version 1.1 (2012-3-5) =
 * Modify manage carousel class.
 * Fix dynamic path to stylesheet and script.
 
-= 1.2 (2012-3-28) =
+= Version 1.2 (2012-3-28) =
 * Modify carousel short code.
 * Add startslide,animationspeed,imagepausetime,shownav,hoverpause parameter with carousel.
 * Add carousel button in default wordpress editor.
 
-= 1.3 (2012-4-5) =
+= Version 1.3 (2012-4-5) =
 * Fix IE bugs.
 * Add effect parameter with carousel
 
-= 1.4 (2012-9-4) =
+= Version 1.4 (2012-9-4) =
 * Integrate with wordpress media library, add new upload button with every background image url text box
 * Add few more checks with short code at backend to validate correctly.
+
+= Version 1.5 (2012-12-21) =
+* Change Carousel admin dashboard
+* Modify database structure
+* Provide support to add multiple carousel on same page
