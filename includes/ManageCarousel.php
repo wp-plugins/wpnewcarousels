@@ -1,7 +1,7 @@
 <?php
 /**
  * @author  Arjun Jain  < http://www.arjunjain.info >
- * @version 1.5 
+ * @version 1.6 
  * @license GNU GENERAL PUBLIC LICENSE Version 3
  */
 class ManageCarousel{
@@ -38,19 +38,19 @@ class ManageCarousel{
 				<input type="submit" class="button" name="addupdatesubmit" value="Add/Update Slides"></form>
 				</div>';
 		if(isset($_POST['addupdatesubmit'])){
-			$html .='<form name="addcarouseldata" method="POST" action="" >
-						<table class="wp-list-table widefat fixed posts" cellspacing="0">
+				$html .='<form name="addcarouseldata" method="POST" action="" >
+						<table class="wp-list-table widefat fixed posts draggable-listings" cellspacing="0">
 						<thead>
 							<tr>
-							<th class="manage-column column-title" scope="col" >Background Image URL</th>
-							<th class="manage-column column-title" scope="col">Background Image href link</th>
-							<th class="manage-column column-title" scope="col">Background Image Alt Text</th>
-							<th class="manage-column column-title" scope="col">Background Image Title</th>
+								<th class="manage-column column-title" scope="col" >Background Image URL</th>
+								<th class="manage-column column-title" scope="col">Background Image href link</th>
+								<th class="manage-column column-title" scope="col">Background Image Alt Text</th>
+								<th class="manage-column column-title" scope="col">Background Image Title</th>
 							</tr>
 						</thead>
 						<tbody id="ajaxslide">';
 			$carouselid=$_POST['carouselid'];
-			$carouseldata=$this->_DataObject->get_results("SELECT * FROM {$this->_carouselData} WHERE CarouselId={$carouselid}",ARRAY_A);
+			$carouseldata=$this->_DataObject->get_results("SELECT * FROM {$this->_carouselData} WHERE CarouselId={$carouselid}  order by weight asc",ARRAY_A);
 			if(sizeof($carouseldata)>0){
 				foreach ($carouseldata as $carousel){
 					$html .= $this->getSlide($carousel);
@@ -58,24 +58,43 @@ class ManageCarousel{
 			}
 			else{
 				for($i=0;$i<3;$i++){
-					$html .=$this->getSlide();
+					$html .=$this->getInitialSLides($i);
 				}
 			}	
 			$html .='</tbody>
 					 <tfoot>
 						<tr>
 							<th colspan="4" class="manage-column column-title"  scope="col">
-								<input type="hidden" name="carouselid" value="'.$carouselid.'"><input type="submit" class="button" style="padding:3px 8px;" name="saveCarousel" value="Save" /></form>
+								<input type="hidden" name="carouselid" value="'.$carouselid.'"><input type="submit" class="button" style="padding:3px 8px;" name="saveCarousel" value="Save" id="slides-save-button"/></form>
 								or 
 								<form style="display:inline;" name="addmoreslideform" method="POST" onsubmit="return addSlides(this,\''.plugins_url('includes/DisplaySlides.php',dirname(__FILE__)).'\');">
-					 				<input type="text" value="1" maxlength="1" size="1" name="numberofslideadd">
+					 				<input type="text" value="1" maxlength="1" size="1" name="numberofslideadd"  style="height:24px; width:30px; text-align:center">
 									<input type="submit" class="button" style="padding:3px 8px;" name="addmoreslides" value="Add" />
 								</form>
 							</th>
 						</tr>
+						<tr><td colspan="4"><p><img title="" src="'.plugins_url('images/hand.jpeg',dirname(__FILE__)).'" /><small>drag the rows to update the slider order (Supported in IE9+, FF, Crome, Safari)</small></p></td></tr>
 					</tfoot>
 				</table>';
 		}
+		return $html;
+	}
+	
+	/**
+	 * Create default slides
+	 * @param array $post_data
+	 */
+	public function getInitialSLides($number)
+	{
+		$html = '<tr valign="top" class="slide-carousal carousal-id-" id="slide-'.$number.'">
+		<td class="title column-title"><input style="width:100%" type="text" name="BackgroundImageURL[]" value="'.@addslashes($postdata['BackgroundImageURL']).'" class="uploadurl" />
+		<input class="button upload_image_button" type="button" value="Select Image" /></td>
+		<td class="title column-title"><input style="width:100%" type="text" name="BackgroundImageLink[]" value="'.@addslashes($postdata['BackgroundImageLink']).'" /></td>
+		<td class="title column-title"><input style="width:100%" type="text" name="BackgroundImageAltText[]" value="'.@addslashes($postdata['BackgroundImageAltText']).'" /></td>
+		<td class="title column-title"><input style="width:100%" type="text" name="TitleText[]" value="'.@addslashes($postdata['TitleText']).'" />
+		<input type="hidden" name="Id[]" value="" class="row-id" />
+		<input type="hidden" name="position[]" value="'.$number.'" class="position-fixer" /></td>
+		</tr>';
 		return $html;
 	}
 	
@@ -84,13 +103,14 @@ class ManageCarousel{
 	 * @param array $post_data
 	 */
 	public function getSlide($postdata=array()){
-		$html = '<tr valign="top">
+		$html = '<tr valign="top" class="slide-carousal carousal-id-'.@$postdata['CarouselId'].'" id="slide-'.@$postdata['Id'].'">
 					<td class="title column-title"><input style="width:100%" type="text" name="BackgroundImageURL[]" value="'.@addslashes($postdata['BackgroundImageURL']).'" class="uploadurl" />
 					<input class="button upload_image_button" type="button" value="Select Image" /></td>
 			  		<td class="title column-title"><input style="width:100%" type="text" name="BackgroundImageLink[]" value="'.@addslashes($postdata['BackgroundImageLink']).'" /></td>
 			  		<td class="title column-title"><input style="width:100%" type="text" name="BackgroundImageAltText[]" value="'.@addslashes($postdata['BackgroundImageAltText']).'" /></td>
 			  		<td class="title column-title"><input style="width:100%" type="text" name="TitleText[]" value="'.@addslashes($postdata['TitleText']).'" />
-			  		<input type="hidden" name="Id[]" value="'.@$postdata['Id'].'" /></td>
+			  		<input type="hidden" name="Id[]" value="'.@$postdata['Id'].'" />
+					<input type="hidden" name="position[]" value="'.@$postdata['weight'].'" class="position-fixer" /></td>
 			  	</tr>';
 		return $html;
 	}
@@ -102,15 +122,17 @@ class ManageCarousel{
 	 * @param string $BackgroundImageLink
 	 * @param string $BackgroudImageAltText
 	 * @param string $TitleText
+	 * @param int    $slideDisplayOrder
 	 */
-	public function InsertCarouselSlides($carouselId,$BackgroundImageURL,$BackgroundImageLink,$BackgroudImageAltText,$TitleText){
+	public function InsertCarouselSlides($carouselId,$BackgroundImageURL,$BackgroundImageLink,$BackgroudImageAltText,$TitleText,$slideDisplayOrder){
 		try{
 			$this->_DataObject->insert($this->_carouselData,array('CarouselId'=>$carouselId,
 																  'BackgroundImageURL'=>$BackgroundImageURL,
 							                                      'BackgroundImageLink'=>$BackgroundImageLink,
 							                                      'BackgroundImageAltText'=>$BackgroudImageAltText,
-							                                      'TitleText'=>$TitleText),
-					                                        array('%d','%s','%s','%s','%s'));
+							                                      'TitleText'=>$TitleText,
+																  'weight'=>$slideDisplayOrder),
+					                                        array('%d','%s','%s','%s','%s','%d'));
 		}catch (Exception $e){
 			echo "Error: ".$e->getMessage(); 
 		}
@@ -124,17 +146,18 @@ class ManageCarousel{
 	 * @param string $BackgroundImageLink
 	 * @param string $BackgroudImageAltText
 	 * @param string $TitleText
-	 * @since 1.5
+	 * @param int 	 $slideDisplayOrder
 	 */
-	public function UpdateCarouselSlides($Id,$carouselId,$BackgroundImageURL,$BackgroundImageLink,$BackgroudImageAltText,$TitleText){
+	public function UpdateCarouselSlides($Id,$carouselId,$BackgroundImageURL,$BackgroundImageLink,$BackgroudImageAltText,$TitleText,$slideDisplayOrder){
 		try{
 			$this->_DataObject->update($this->_carouselData,array('BackgroundImageURL'=>stripslashes($BackgroundImageURL),
 																  'BackgroundImageLink'=>stripslashes($BackgroundImageLink),
 																  'BackgroundImageAltText'=>stripslashes($BackgroudImageAltText),
-																  'TitleText'=>stripslashes($TitleText)),
+																  'TitleText'=>stripslashes($TitleText),
+																  'weight'=>$slideDisplayOrder ),
 															array('CarouselId'=>$carouselId,
 																  'Id'=>$Id),
-															array('%s','%s','%s','%s'),
+															array('%s','%s','%s','%s','%d'),
 															array('%d','%d'));
 		}catch (Exception $e){
 			echo "Error: ".$e->getMessage(); 
@@ -162,7 +185,7 @@ class ManageCarousel{
 	 */
 	public function GetCarouselDataById($carouselId){
 		try{
-			$result=$this->_DataObject->get_results($this->_DataObject->prepare('SELECT * FROM '.$this->_carouselData.' WHERE CarouselId=%d',$carouselId));
+			$result=$this->_DataObject->get_results($this->_DataObject->prepare('SELECT * FROM '.$this->_carouselData.' WHERE CarouselId=%d order by weight asc',$carouselId));
 			return $result;
 		}catch(Exception $e){
 			echo "Error: ".$e->getMessage();
@@ -206,7 +229,6 @@ class ManageCarousel{
 							<th class="manage-column column-author" scope="col">Carousel Width</th>
 							<th class="manage-column column-author" scope="col">Carousel Height</th>
 							<th class="manage-column column-author" scope="col">Carousel Effect</th>
-							<th class="manage-column column-author" scope="col">Starting slide</th>
 							<th class="manage-column column-author" scope="col">Animation speed</th>
 							<th class="manage-column column-author" scope="col">Pause time</th>
 							<th class="manage-column column-author" scope="col">Navigation icons</th>
@@ -230,7 +252,6 @@ class ManageCarousel{
 							<td class="author column-author"><a href="?page=add-new-wpnewcarousel&edit=1&rid='.$carousel->Id.'">'.$carousel->CarouselWidth.'</a></td>
 							<td class="author column-author"><a href="?page=add-new-wpnewcarousel&edit=1&rid='.$carousel->Id.'">'.$carousel->CarouselHeight.'</a></td>
 							<td class="author column-author"><a href="?page=add-new-wpnewcarousel&edit=1&rid='.$carousel->Id.'">'.$carousel->CarouselEffect.'</a></td>
-							<td class="author column-author"><a href="?page=add-new-wpnewcarousel&edit=1&rid='.$carousel->Id.'">'.$carousel->StartSlide.'</a></td>
 							<td class="author column-author"><a href="?page=add-new-wpnewcarousel&edit=1&rid='.$carousel->Id.'">'.$carousel->AnimationSpeed.'</a></td>
 							<td class="author column-author"><a href="?page=add-new-wpnewcarousel&edit=1&rid='.$carousel->Id.'">'.$carousel->PauseTime.'</a></td>						
 							<td class="author column-author"><a href="?page=add-new-wpnewcarousel&edit=1&rid='.$carousel->Id.'">'.$carousel->ShowNav.'</a></td>	
@@ -240,7 +261,7 @@ class ManageCarousel{
 		$html .='	</tbody>
 					<tfoot>
 						<tr>
-							<th colspan="10"class="manage-column column-title" style="text-align:right !important;" scope="col">Find Bug or suggest new feature please <a target="_blank" href="http://www.arjunjain.info/contact">click here</a></th>
+							<th colspan="9"class="manage-column column-title" style="text-align:right !important;" scope="col">Find Bug? <a target="_blank" href="https://github.com/arjunjain/wpnewcarousels/wiki">Create new issue</a></th>
 						</tr>
 					</tfoot>
 				</table>
@@ -254,10 +275,11 @@ class ManageCarousel{
 	 * @param string $errormsg
 	 */
 	public function DisplayAddNewCarousel($postdata=array(),$errormsg=''){
-		if(@$postdata['carouselid']==0)
-		$buttontext="Add new carousel";
+		if(isset($postdata['carouselid']) && ($postdata['carouselid']==0))
+			$buttontext="Add new carousel";
 		else 
-		$buttontext="Update carousel";
+			$buttontext="Update carousel";
+		
 		$anims = array(	'random'=>'Random',
 						'sliceDown'=>'SliceDown',
 						'sliceDownRight'=>'Slicedownright',
@@ -307,7 +329,7 @@ class ManageCarousel{
 			  	
 			  	foreach ($anims as $key=>$value){
 			  		$html .= '<option value="'.$key.'" ';
-			  		if($key== @$postdata['carouseleffect'])
+			  		if(isset($postdata['carouseleffect']) && ($key== $postdata['carouseleffect']))
 			  			$html .= 'selected="selected"';
 			  		$html .='>'.$value.'</option>';								
 			  	}
@@ -338,7 +360,7 @@ class ManageCarousel{
 										<select name="shownav">';
 				foreach ($truefalse as $key=>$value){
 					$html .= "<option value='$key' ";
-					if($key==@$postdata['shownav'])
+					if( isset($postdata['shownav']) && ($key==$postdata['shownav']))
 						$html .= 'selected="selected"';
 					$html .= ">$value</option>";
 				}
@@ -351,7 +373,7 @@ class ManageCarousel{
 										<select name="hoverpause">';
 				foreach ($truefalse as $key=>$value){
 					$html .= "<option value='$key' ";
-					if($key==@$postdata['hoverpause'])
+					if(isset($postdata['hoverpause']) && ($key==$postdata['hoverpause']))
 						$html .= 'selected="selected"';
 					$html .= ">$value</option>";
 				}
@@ -545,15 +567,16 @@ class ManageCarousel{
 				  ."BackgroundImageLink varchar(255) DEFAULT NULL,"
 				  ."BackgroundImageAltText varchar(255) DEFAULT NULL,"
 				  ."TitleText varchar(255) DEFAULT NULL,"
+  				  ."weight int(3) DEFAULT 0,"
 				  ."FOREIGN KEY (CarouselId) REFERENCES $this->_carouselTable(Id) ON UPDATE CASCADE ON DELETE CASCADE,"
 				  ."PRIMARY KEY (Id,CarouselId))ENGINE=INNODB;";
 			require_once ABSPATH.'wp-admin/includes/upgrade.php';
 			dbDelta($sql);
 		 	if($this->_DataObject->get_var("SHOW TABLES LIKE '{$olddatatablenamewindow}'") == $olddatatablenamewindow){
-				$this->_DataObject->query("INSERT INTO {$this->_carouselData} SELECT * FROM {$olddatatablenamewindow}");
+				$this->_DataObject->query("INSERT INTO $this->_carouselData(Id,CarouselId,BackgroundImageURL,BackgroundImageLink,BackgroundImageAltText,TitleText) SELECT * FROM {$olddatatablenamewindow}");
 			}
 			else if($this->_DataObject->get_var("SHOW TABLES LIKE '{$olddatatablenamelinux}'") == $olddatatablenamelinux){
-				$this->_DataObject->query("INSERT INTO {$this->_carouselData} SELECT * FROM {$olddatatablenamelinux}");
+				$this->_DataObject->query("INSERT INTO $this->_carouselData(Id,CarouselId,BackgroundImageURL,BackgroundImageLink,BackgroundImageAltText,TitleText) SELECT * FROM {$olddatatablenamelinux}");
 			}
 		}
 		if($this->_DataObject->get_var("SHOW TABLES LIKE '{$olddatatablenamewindow}'") == $olddatatablenamewindow){
@@ -564,6 +587,11 @@ class ManageCarousel{
 			$this->_DataObject->query("DROP TABLE {$olddatatablenamelinux}");
 			$this->_DataObject->query("DROP TABLE {$oldmaintablenamelinux}");
 		}
+	}
+	
+	public function UpdateTable_AddWeight(){
+		$sql="ALTER TABLE {$this->_carouselData} ADD `weight` INT(3) NULL DEFAULT '0'";
+		$this->_DataObject->query($sql);
 	}
 	
 	public function CreateTable(){
@@ -592,6 +620,7 @@ class ManageCarousel{
 				 ."BackgroundImageLink varchar(255) DEFAULT NULL,"
 				 ."BackgroundImageAltText varchar(255) DEFAULT NULL,"
 				 ."TitleText varchar(255) DEFAULT NULL,"
+				 ."weight int(3) DEFAULT 0,"
 				 ."FOREIGN KEY (CarouselId) REFERENCES $this->_carouselTable(Id) ON UPDATE CASCADE ON DELETE CASCADE,"
 				 ."PRIMARY KEY (Id,CarouselId))ENGINE=INNODB;";			
 		}
