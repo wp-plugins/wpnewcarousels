@@ -1,7 +1,7 @@
 === WPNewCarousels ===
 Contributors: arjunjain08	
 Author URI: http://www.arjunjain.info/
-Donate link: http://www.arjunjain.info
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=SQC4WR7X5JGDY&lc=IN&item_name=WPNewCarousels&button_subtype=services&currency_code=USD&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted
 Plugin URI: http://wordpress.org/extend/plugins/wpnewcarousels/  
 Tags: carousel, wordpress carousel,admin, plugin, multisite carousel,multisite,wordpress,slider
 Requires at least: 3.0
