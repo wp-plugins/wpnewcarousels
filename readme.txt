@@ -8,7 +8,7 @@ Requires at least: 3.0
 Tested up to: 3.8.1
 Stable tag: 1.7
 
-This plugin is used to create the carousel that can be inserted to any wordpress page/post. Support Mutlisite setup.
+This plugin is used to create the carousel that can be inserted to any wordpress page/post. Support Wordpress Multisite setup.
 
 == Description ==
 This plugin is used to create the carousel that can be inserted to any wordpress page/post. This plugin also support wordpress multisite setup.
