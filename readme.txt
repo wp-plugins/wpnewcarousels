@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=SQC4WR7X
 Plugin URI: http://wordpress.org/extend/plugins/wpnewcarousels/  
 Tags: slider, carousel, responsive slider,responsive carousel, wordpress carousel, multisite carousel, multisite slider, wordpress slider, carousel plugin, wordpress carousel plugin
 Requires at least: 3.0
-Tested up to: 4.1
+Tested up to: 4.1.1
 Stable tag: 1.8
 
 This plugin is used to create the responsive carousel that can be inserted to any wordpress page/post. This plugin also support Wordpress Multisite setup.
